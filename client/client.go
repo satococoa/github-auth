@@ -81,18 +81,19 @@ func findAccessToken(s *napping.Session, appName string) (string, error) {
 		UpdatedAt string `json:"updated_at"`
 		CreatedAt string `json:"created_at"`
 	}
-	res := []authorization{}
 
-	e := struct {
+	type httpError struct {
 		Message string
 		Errors  []struct {
 			Resource string
 			Field    string
 			Code     string
 		}
-	}{}
+	}
 
 	fetchAuthorizations := func(url string) ([]authorization, string, error) {
+		res := []authorization{}
+		e := httpError{}
 		resp, err := s.Get(url, nil, &res, &e)
 		if err != nil {
 			return nil, "", err
@@ -117,20 +118,20 @@ func findAccessToken(s *napping.Session, appName string) (string, error) {
 	for {
 		res, nextURL, err := fetchAuthorizations(url)
 		if err != nil {
-			return "", nil
+			return "", err
 		}
+		authorizations = append(authorizations, res...)
 		if nextURL == "" {
 			break
 		}
 		url = nextURL
-		authorizations = append(authorizations, res...)
 	}
 
-	for i := 0; i < len(authorizations); i++ {
+	for _, auth := range authorizations {
 		// "hoge (API)" という名前が付けられるようなのでそれで探す
 		// FIXME: note 属性で探したかったが、レスポンスについてこなかった
-		if authorizations[i].App["name"] == appName+" (API)" {
-			return authorizations[i].Token, nil
+		if auth.App["name"] == appName+" (API)" {
+			return auth.Token, nil
 		}
 	}
 
