@@ -2,8 +2,8 @@
 
 GitHub authentication library for golang.
 
-Documentation: [![GoDoc](https://godoc.org/github.com/satococoa/github-auth?status.svg)](https://godoc.org/github.com/satococoa/github-auth)
-Build Status: [![Circle CI](https://circleci.com/gh/satococoa/github-auth.svg?style=svg)](https://circleci.com/gh/satococoa/github-auth)
+**Documentation:** [![GoDoc](https://godoc.org/github.com/satococoa/github-auth?status.svg)](https://godoc.org/github.com/satococoa/github-auth)  
+**Build Status:** [![Circle CI](https://circleci.com/gh/satococoa/github-auth.svg?style=svg)](https://circleci.com/gh/satococoa/github-auth)
 
 ## Usage
 
